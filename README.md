@@ -59,15 +59,12 @@ The full pipeline consists of the following steps:
 ---
 
 ## Project Structure
+
+```text
 project/
-│
 ├── data/
 │   ├── test_plays/
-│   ├── raw_texts_plays/
-│   ├── chunked_plays.csv
-│   ├── graph_nodes.csv
-│   ├── graph_edges.csv
-│   ├── chunk_embeddings.npy
+│   └── raw_texts_plays/
 │
 ├── src/
 │   ├── preprocess/
@@ -75,33 +72,32 @@ project/
 │   │   ├── annotate_and_mask.py
 │   │   ├── split_sentences_from_annotation.py
 │   │   ├── preprocess_pipeline.py
-│   │   ├── *test_preprocess.py
-│   │
-│   ├── LLM_EMBEDDING.py
+│   │   └── test_preprocess.py
 │   │
 │   ├── WAN/
 │   │   ├── function_words.py
 │   │   ├── wan_matrix.py
 │   │   ├── markov_normalization.py
 │   │   ├── wan_distance.py
+│   │   ├── WAN_pipeline.py
 │   │   ├── relative_entropy/
 │   │   │   ├── Bhattacharyya_Distance.py
 │   │   │   ├── Hellinger_Distance.py
 │   │   │   ├── Jensen_Shannon_Divergence.py
 │   │   │   ├── Kullback_Leibler_Divergence.py
 │   │   │   ├── Renyi_Divergence.py
-│   │   │   ├── Total_Variation_Distance.py
-│   │   ├── WAN_pipeline.py
-│   │   ├── *test_WAN.py
+│   │   │   └── Total_Variation_Distance.py
+│   │   └── test_WAN.py
 │   │
 │   ├── build_dataset.py
 │   ├── GNN_INPUT.py
-│   ├── GRAPH_CONSTRUCTION.py
 │   ├── GNN_MODELS.py
-│   ├── TRAIN_GNN.py
+│   ├── GRAPH_CONSTRUCTION_PAIRWISE.py
+│   ├── LLM_EMBEDDING.py
+│   └── TRAIN_GNN.py
 │
 └── README.md
-
+```
 
 ---
 
