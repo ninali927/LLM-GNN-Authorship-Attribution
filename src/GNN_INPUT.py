@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import torch
 
-from GRAPH_CONSTRUCTION import graph_construction
+from GRAPH_CONSTRUCTION_PAIREWISE import graph_construction_pairwise
 from LLM_EMBEDDING import generate_chunk_embeddings
 
 
@@ -67,7 +67,7 @@ def prepare_gnn_inputs(
     # 1. Build graph (this already builds dataset inside)
     # -----------------------------------
     print("\n[1] Building graph...")
-    graph_construction(
+    graph_construction_pairwise(
         input_folder=input_folder,
         chunked_dataset_file=chunked_dataset_file,
         nodes_output_file=nodes_csv,
@@ -108,9 +108,9 @@ def prepare_gnn_inputs(
 if __name__ == "__main__":
     input_folder = "data/test_plays"
     chunked_dataset_file = "data/test_plays.csv"
-    nodes_csv = "data/test_graph_nodes.csv"
-    edges_csv = "data/test_graph_edges.csv"
-    embeddings_npy = "data/test_chunk_embeddings.npy"
+    nodes_csv = "data/graph_nodes.csv"
+    edges_csv = "data/graph_edges.csv"
+    embeddings_npy = "data/chunk_embeddings.npy"
 
     function_words = [
         "the", "a", "an", "and", "or", "but", "to", "of", "in", "on",

@@ -53,7 +53,7 @@ def create_nodes_dataframe(df):
     return nodes_df, author_to_label
 
 
-def build_all_pairs_edges_test(nodes_df,
+def build_edges_pairwise(nodes_df,
                                function_words,
                                D=10,
                                alpha=0.75,
@@ -130,7 +130,7 @@ def build_all_pairs_edges_test(nodes_df,
     return edges_df
 
 
-def graph_construction_test(input_folder,
+def graph_construction_pairwise(input_folder,
                             chunked_dataset_file,
                             nodes_output_file,
                             edges_output_file,
@@ -196,7 +196,7 @@ def graph_construction_test(input_folder,
     print("\n========== STEP 4: BUILD EDGES ==========")
     step4_start = time.time()
 
-    edges_df = build_all_pairs_edges_test(
+    edges_df = build_edges_pairwise(
         nodes_df=nodes_df,
         function_words=function_words,
         D=D,
@@ -227,7 +227,7 @@ def graph_construction_test(input_folder,
 
     total_end = time.time()
 
-    print("\n========== GRAPH CONSTRUCTION TEST FINISHED ==========")
+    print("\n========== GRAPH CONSTRUCTION (PAIRWISE) FINISHED ==========")
     print("Final number of nodes:", len(nodes_df))
     print("Final number of edges:", len(edges_df))
     print("Total time:", round(total_end - total_start, 2), "seconds")
@@ -246,7 +246,7 @@ if __name__ == "__main__":
         "are", "were", "not", "do", "does", "did", "have", "has", "had"
     ]
 
-    graph_construction_test(
+    graph_construction_pairwise(
         input_folder=input_folder,
         chunked_dataset_file=chunked_dataset_file,
         nodes_output_file=nodes_output_file,
