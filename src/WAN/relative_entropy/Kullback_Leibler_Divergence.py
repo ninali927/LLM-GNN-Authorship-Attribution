@@ -23,3 +23,30 @@ def Kullback_Leibler_Divergence(P1, P2, epsilon=1e-12):
             value += p * np.log(p / q_safe)
 
     return value
+
+
+
+def get_kl_annoy_vector(P, role="query", epsilon=1e-12):
+    """
+    Return the Annoy-compatible vector for KL divergence.
+
+    For KL(P1 || P2):
+        KL(P1 || P2) = const(P1) - <P1, log(P2)>
+
+    So:
+        - query vector = pi
+        - index vector = log(pi)
+
+    role:
+        "query" -> return pi
+        "index" -> return log(pi)
+    """
+    pi = compute_stationary_distribution(P)
+    pi = np.maximum(pi, epsilon)
+
+    if role == "query":
+        return pi
+    elif role == "index":
+        return np.log(pi)
+    else:
+        raise ValueError("role must be 'query' or 'index'")

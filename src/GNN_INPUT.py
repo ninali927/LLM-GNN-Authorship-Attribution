@@ -3,6 +3,7 @@ import pandas as pd
 import torch
 
 from GRAPH_CONSTRUCTION_PAIREWISE import graph_construction_pairwise
+from GRAPH_CONSTRUCTION_ANNOY import graph_construction_annoy
 from LLM_EMBEDDING import generate_chunk_embeddings
 
 
@@ -53,7 +54,12 @@ def prepare_gnn_inputs(
     distance_type="kl",
     model_name="gpt2",
     batch_size=4,
-    max_length=256
+    max_length=256,
+    graph_mode="pairwise",
+    k=10,
+    num_trees=20,
+    search_k=-1,
+    renyi_alpha=0.5
 ):
     """
     Full pipeline before GNN:
@@ -61,24 +67,51 @@ def prepare_gnn_inputs(
     1. Build chunked dataset + graph files
     2. Generate embeddings
     3. Load X, edge_index, edge_weight, y
+
+    graph_mode:
+        - "pairwise": dense graph from pairwise distances
+        - "annoy": sparse graph from Annoy candidate retrieval
     """
 
     # -----------------------------------
-    # 1. Build graph (this already builds dataset inside)
+    # 1. Build graph
     # -----------------------------------
     print("\n[1] Building graph...")
-    graph_construction_pairwise(
-        input_folder=input_folder,
-        chunked_dataset_file=chunked_dataset_file,
-        nodes_output_file=nodes_csv,
-        edges_output_file=edges_csv,
-        function_words=function_words,
-        chunk_size=chunk_size,
-        D=D,
-        alpha=alpha,
-        epsilon=epsilon,
-        distance_type=distance_type
-    )
+
+    if graph_mode == "pairwise":
+        graph_construction_pairwise(
+            input_folder=input_folder,
+            chunked_dataset_file=chunked_dataset_file,
+            nodes_output_file=nodes_csv,
+            edges_output_file=edges_csv,
+            function_words=function_words,
+            chunk_size=chunk_size,
+            D=D,
+            alpha=alpha,
+            epsilon=epsilon,
+            distance_type=distance_type
+        )
+
+    elif graph_mode == "annoy":
+        graph_construction_annoy(
+            input_folder=input_folder,
+            chunked_dataset_file=chunked_dataset_file,
+            nodes_output_file=nodes_csv,
+            edges_output_file=edges_csv,
+            function_words=function_words,
+            chunk_size=chunk_size,
+            D=D,
+            alpha=alpha,
+            epsilon=epsilon,
+            distance_type=distance_type,
+            k=k,
+            num_trees=num_trees,
+            search_k=search_k,
+            renyi_alpha=renyi_alpha
+        )
+
+    else:
+        raise ValueError("graph_mode must be 'pairwise' or 'annoy'")
 
     # -----------------------------------
     # 2. Generate embeddings
@@ -130,10 +163,15 @@ if __name__ == "__main__":
         D=10,
         alpha=0.75,
         epsilon=1e-12,
-        distance_type="kl",
+        distance_type="bhattacharyya",
         model_name="gpt2",
         batch_size=4,
-        max_length=256
+        max_length=256,
+        graph_mode="annoy",
+        k=3,
+        num_trees=20,
+        search_k=-1,
+        renyi_alpha=0.5
     )
 
     print("\nFinished preparing GNN inputs.")

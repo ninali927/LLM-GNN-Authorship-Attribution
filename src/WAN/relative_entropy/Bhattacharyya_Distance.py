@@ -20,3 +20,25 @@ def Bhattacharyya_Distance(P1, P2, epsilon=1e-12):
     value = -np.log(max(value, epsilon))
 
     return value
+
+
+def get_bhattacharyya_annoy_vector(P):
+    """
+    Return the Annoy-compatible vector for Bhattacharyya distance.
+
+    D_B(P1, P2) = -log( <sqrt(pi1), sqrt(pi2)> )
+
+    So we map each WAN to:
+        v = sqrt(pi)
+
+    Then Annoy can approximate nearest neighbors using inner product / cosine similarity.
+    """
+    pi = compute_stationary_distribution(P)
+
+    # numerical stability
+    pi = np.maximum(pi, 1e-12)
+
+    # elementwise sqrt
+    v = np.sqrt(pi)
+
+    return v

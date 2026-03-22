@@ -27,3 +27,34 @@ def Renyi_Divergence(P1, P2, alpha=0.5, epsilon=1e-12):
     value = (1 / (alpha - 1)) * np.log(value)
 
     return value
+
+
+
+
+def get_renyi_annoy_vector(P, alpha=0.5, role="query", epsilon=1e-12):
+    """
+    Return the Annoy-compatible vector for Rényi divergence.
+
+    Based on the rewrite:
+        D_alpha(P1 || P2) ~ log( <P1^alpha, P2^(1-alpha)> )
+
+    So:
+        - query vector = pi^alpha
+        - index vector = pi^(1-alpha)
+
+    role:
+        "query" -> return pi^alpha
+        "index" -> return pi^(1-alpha)
+    """
+    if alpha <= 0 or alpha == 1:
+        raise ValueError("alpha must be > 0 and != 1")
+
+    pi = compute_stationary_distribution(P)
+    pi = np.maximum(pi, epsilon)
+
+    if role == "query":
+        return pi ** alpha
+    elif role == "index":
+        return pi ** (1 - alpha)
+    else:
+        raise ValueError("role must be 'query' or 'index'")

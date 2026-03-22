@@ -21,3 +21,26 @@ def Hellinger_Distance(P1, P2):
     value = (1 / np.sqrt(2)) * np.sqrt(value)
 
     return value
+
+
+
+def get_hellinger_annoy_vector(P):
+    """
+    Return the Annoy-compatible vector for Hellinger distance.
+
+    H^2(P1, P2) ∝ || sqrt(pi1) - sqrt(pi2) ||^2 ⇔ maximizing <sqrt(pi1), sqrt(pi2)>
+
+    So we map each WAN to:
+        v = sqrt(pi)
+
+    Then Annoy can approximate nearest neighbors using inner product / cosine similarity.
+    """
+    pi = compute_stationary_distribution(P)
+
+    # numerical stability
+    pi = np.maximum(pi, 1e-12)
+
+    # elementwise sqrt
+    v = np.sqrt(pi)
+
+    return v
