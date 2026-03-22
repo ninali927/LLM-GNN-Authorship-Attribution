@@ -83,6 +83,9 @@ You can choose graph type in `GNN_INPUT.py`:
 ```python
 graph_mode = "pairwise"   # dense graph
 graph_mode = "annoy"      # sparse graph
+```
+---
+
 
 ## Project Structure
 
