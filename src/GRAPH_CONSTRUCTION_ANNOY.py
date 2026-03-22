@@ -410,7 +410,7 @@ if __name__ == "__main__":
         alpha=0.75,
         epsilon=1e-12,
         distance_type="bhattacharyya",
-        k=10,
+        k=3,
         num_trees=20,
         search_k=-1,
         renyi_alpha=0.5

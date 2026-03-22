@@ -55,7 +55,7 @@ def prepare_gnn_inputs(
     model_name="gpt2",
     batch_size=4,
     max_length=256,
-    graph_mode="pairwise",
+    graph_mode="annoy",
     k=10,
     num_trees=20,
     search_k=-1,
@@ -140,7 +140,7 @@ def prepare_gnn_inputs(
 
 if __name__ == "__main__":
     input_folder = "data/test_plays"
-    chunked_dataset_file = "data/test_plays.csv"
+    chunked_dataset_file = "data/chunked_plays.csv"
     nodes_csv = "data/graph_nodes.csv"
     edges_csv = "data/graph_edges.csv"
     embeddings_npy = "data/chunk_embeddings.npy"
@@ -154,7 +154,7 @@ if __name__ == "__main__":
 
     X, edge_index, edge_weight, y = prepare_gnn_inputs(
         input_folder=input_folder,
-        chunked_dataset_file=chunked_dataset_file,
+        chunked_dataset_file="data/chunked_plays.csv",
         nodes_csv=nodes_csv,
         edges_csv=edges_csv,
         embeddings_npy=embeddings_npy,

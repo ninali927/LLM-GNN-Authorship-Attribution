@@ -200,7 +200,7 @@ if __name__ == "__main__":
     # 2. File paths
     # -----------------------------------
     input_folder = "data/test_plays"
-    chunked_dataset_file = "data/test_plays.csv"
+    chunked_dataset_file = "data/chunked_plays.csv"
     nodes_csv = "data/graph_nodes.csv"
     edges_csv = "data/graph_edges.csv"
     embeddings_npy = "data/chunk_embeddings.npy"
@@ -229,10 +229,15 @@ if __name__ == "__main__":
         D=10,
         alpha=0.75,
         epsilon=1e-12,
-        distance_type="kl",
+        distance_type="bhattacharyya",
         model_name="gpt2",
         batch_size=4,
-        max_length=256
+        max_length=256,
+        graph_mode="annoy",
+        k=3,
+        num_trees=20,
+        search_k=-1,
+        renyi_alpha=0.5
     )
 
     print("\nData loaded.")
